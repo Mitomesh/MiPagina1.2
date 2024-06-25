@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Landing Page de Videojuegos</title>
+    <style>
+        /* Encabezado */
+        header {
+            background-color: rgb(48, 49, 48);
+            color: #ffffff;
+            text-align: center;
+            padding: 20px;
+        }
+
+        /* Navegación */
+        nav ul {
+            list-style: none; /*Elimina la conf. por defecto de las listas*/
+            display: flex;  /*Hace flexible la lista para ajustar al centro*/
+            justify-content: center;
+            background-color: #339ab9;
+            padding: 10px;
+        }
+
+        nav ul li {
+            margin-right: 20px; /*Espacio en la barra entre opciones*/
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #fff;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: #ff9900; /*Cambio de color por puntero*/
+        }
+
+        /* Secciones */
+        section {
+            padding: 5px;
+            background-color: #d9f4fc;
+            margin: 50px;
+            border-radius: 5px;
+        }
+
+        #Contacto {
+            padding: 5px;
+            background-color: #d9f4fc;
+            margin: 50px;
+            border-radius: 5px;
+        }
+
+        /* Formulario de contacto */
+        form {
+            max-width: 300px; /*Tamano max*/
+            margin: 0 auto; /* Centrar el form */
+            margin-bottom: 50px; /* Añade espacio debajo del formulario */
+        }
+
+        form input,
+        form textarea,
+        form select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px; /*Espacio*/
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        form button {
+            background-color: #ff9900;
+            color: #fff;
+            border: none; 
+            padding: 10px;
+            border-radius: 3px;
+            cursor: pointer; /*cambia el puntero a una mano*/
+        }
+
+        form button:hover {
+            background-color: #ffcc00; /*Reacciona al pasar el puntero*/
+        }
+
+        /* Pie de página */
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #333;
+            color: #fff;
+        }
+
+        /* Tarjeta de juego */
+        .tarjeta {
+            border: 1px solid #c2bfbf;
+            border-radius: 5px;
+            margin-bottom: 5px;
+            width: auto;
+        }
+
+        .tarjeta img {
+            width: 100%; /*Ayuda a cambiar el tamano de las imagenes*/
+            height: auto;
+        }
+
+        .tarjeta-info { /*Espacio entre imagen y texto*/
+            padding: 20px;
+        }
+
+        .tarjeta-info p {
+            font-size: 16px; /*Tamano*/
+            line-height: 1.5; /*Espacio entre lineas*/
+        }
+
+        .mi-tabla {
+            width: auto; /* Ajusta el ancho de la tabla según el contenedor */
+            table-layout: auto; /* Utiliza el tamaño de las celdas para determinar el ancho de la tabla */
+        }
+
+        .mi-tabla img {
+            max-width: 100%; /* Ajusta el ancho máximo de la imagen */
+            height: auto; /* Permite que la altura se ajuste automáticamente según el ancho */
+        }
+
+        /* Reglas de pantalla para diseño responsivo */
+        @media screen and (max-width: 768px) {
+            /* Estilos para pantallas pequeñas */
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+            nav ul li {
+                margin: 10px 0;
+            }
+            .tarjeta {
+                width: 100%;
+            }
+        }
+
+        @media screen and (min-width: 769px) and (max-width: 1024px) {
+            /* Estilos para tablets y dispositivos móviles */
+            header {
+                padding: 10px;
+            }
+            section {
+                margin: 10px;
+            }
+            .tarjeta {
+                width: 100%;
+            }
+        }
+
+        /* Login */
+        #Login, #Registro {
+            padding: 5px;
+            background-color: #d9f4fc;
+            margin: 50px;
+            border-radius: 5px;
+        }
+
+        #formularioInicioSesion, #formularioRegistro {
+            max-width: 300px;
+            margin: 0 auto;
+            margin-bottom: 50px;
+        }
+
+        #formularioInicioSesion input, #formularioRegistro input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        #formularioInicioSesion button, #formularioRegistro button {
+            background-color: #ff9900;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        #formularioInicioSesion button:hover, #formularioRegistro button:hover {
+            background-color: #ffcc00;
+        }
+
+        #mensajeInicioSesion, #mensajeRegistro {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        #descargarJSON {
+            background-color: #ff9900;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        #descargarJSON:hover {
+            background-color: #ffcc00;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Carga inicial del DOM y asignación de variables a elementos HTML
+            const formularioContacto = document.getElementById('formularioContacto');
+            const formularioReseña = document.getElementById('formularioReseña');
+            const listaReseñas = document.getElementById('listaReseñas');
+            const formularioForo = document.getElementById('formularioForo');
+            const listaPublicaciones = document.getElementById('listaPublicaciones');
+            const formularioInicioSesion = document.getElementById('formularioInicioSesion');
+            const mensajeInicioSesion = document.getElementById('mensajeInicioSesion');
+            const formularioRegistro = document.getElementById('formularioRegistro');
+            const mensajeRegistro = document.getElementById('mensajeRegistro');
+            const descargarJSON = document.getElementById('descargarJSON');
+
+             // Inicialización de datos almacenados o nuevos arrays vacíos
+            let reseñas = JSON.parse(localStorage.getItem('reseñas')) || [];
+            let publicaciones = JSON.parse(localStorage.getItem('publicaciones')) || [];
+            let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+
+
+            // Manejo del formulario de contacto
+            formularioContacto.addEventListener('submit', function(evento) {
+                evento.preventDefault();
+                    // Recopilación y validación de datos del formulario de contacto
+                const datosFormulario = {
+                    nombre: formularioContacto.nombre.value,
+                    email: formularioContacto.email.value,
+                    edad: formularioContacto.edad.value,
+                    fecha: formularioContacto.fecha.value,
+                    tema: formularioContacto.tema.value,
+                    suscripcion: formularioContacto.suscripcion.checked,
+                    mensaje: formularioContacto.mensaje.value
+                };
+                // Validación de campos obligatorios
+                if (!datosFormulario.nombre || !datosFormulario.email || !datosFormulario.edad || !datosFormulario.fecha || !datosFormulario.mensaje) {
+                    alert('Por favor, completa todos los campos obligatorios.');
+                    return;
+                }
+                 // Confirmación de envío y almacenamiento en LocalStorage
+                alert('Datos enviados exitosamente!');
+                console.log('Datos del formulario:', JSON.stringify(datosFormulario));
+                localStorage.setItem('datosFormulario', JSON.stringify(datosFormulario));
+                formularioContacto.reset();
+            });
+            
+            formularioReseña.addEventListener('submit', function(evento) {
+                evento.preventDefault();
+
+                // Manejo del formulario de reseñas
+                const nuevaReseña = {
+                    juego: formularioReseña.juego.value,
+                    usuario: formularioReseña.usuario.value,
+                    texto: formularioReseña.reseña.value
+                };
+                
+                reseñas.push(nuevaReseña);
+                localStorage.setItem('reseñas', JSON.stringify(reseñas));
+                mostrarReseñas();
+                formularioReseña.reset();
+            });
+
+            // Función para mostrar reseñas en la página
+            function mostrarReseñas() {
+                listaReseñas.innerHTML = '';
+                reseñas.forEach((reseña, index) => {
+                    const reseñaElemento = document.createElement('div');
+                    reseñaElemento.innerHTML = `
+                        <h3>${reseña.juego} - ${reseña.usuario}</h3>
+                        <p>${reseña.texto}</p>
+                        <button onclick="editarReseña(${index})">Editar</button>
+                        <button onclick="eliminarReseña(${index})">Eliminar</button>
+                    `;
+                    listaReseñas.appendChild(reseñaElemento);
+                });
+            }
+
+              // Función para editar reseñas existentes
+            window.editarReseña = function(index) {
+                const reseña = reseñas[index];
+                formularioReseña.juego.value = reseña.juego;
+                formularioReseña.usuario.value = reseña.usuario;
+                formularioReseña.reseña.value = reseña.texto;
+                reseñas.splice(index, 1);
+                localStorage.setItem('reseñas', JSON.stringify(reseñas));
+                mostrarReseñas();
+            }
+
+            // Función para eliminar reseñas
+            window.eliminarReseña = function(index) {
+                reseñas.splice(index, 1);
+                localStorage.setItem('reseñas', JSON.stringify(reseñas));
+                mostrarReseñas();
+            }
+
+            // Manejo del formulario del foro
+            formularioForo.addEventListener('submit', function(evento) {
+                evento.preventDefault();
+                
+                const nuevaPublicacion = {
+                    titulo: formularioForo.titulo.value,
+                    contenido: formularioForo.contenido.value
+                };
+                
+                publicaciones.push(nuevaPublicacion);
+                localStorage.setItem('publicaciones', JSON.stringify(publicaciones));
+                mostrarPublicaciones();
+                formularioForo.reset();
+            });
+
+             // Función para mostrar publicaciones en el foro
+            function mostrarPublicaciones() {
+                listaPublicaciones.innerHTML = '';
+                publicaciones.forEach((publicacion, index) => {
+                    const publicacionElemento = document.createElement('div');
+                    publicacionElemento.innerHTML = `
+                        <h3>${publicacion.titulo}</h3>
+                        <p>${publicacion.contenido}</p>
+                        <button onclick="eliminarPublicacion(${index})">Eliminar</button>
+                    `;
+                    listaPublicaciones.appendChild(publicacionElemento);
+                });
+            }
+
+             // Función para eliminar publicaciones del foro
+            window.eliminarPublicacion = function(index) {
+                publicaciones.splice(index, 1);
+                localStorage.setItem('publicaciones', JSON.stringify(publicaciones));
+                mostrarPublicaciones();
+            }
+
+             // Manejo del formulario de registro
+            formularioRegistro.addEventListener('submit', function(evento) {
+                evento.preventDefault();
+                // Registro de nuevos usuarios
+                const nuevoUsuario = {
+                    nombreUsuario: formularioRegistro.regNombreUsuario.value,
+                    contraseña: formularioRegistro.regContraseña.value
+                };
+                
+                const usuarioExiste = usuarios.find(usuario => usuario.nombreUsuario === nuevoUsuario.nombreUsuario);
+                
+                if (usuarioExiste) {
+                    mensajeRegistro.textContent = 'Nombre de usuario ya existe.';
+                    mensajeRegistro.style.color = 'red';
+                } else {
+                    usuarios.push(nuevoUsuario);
+                    localStorage.setItem('usuarios', JSON.stringify(usuarios));
+                    mensajeRegistro.textContent = 'Usuario registrado exitosamente!';
+                    mensajeRegistro.style.color = 'green';
+                }
+                
+                formularioRegistro.reset();
+            });
+
+            formularioInicioSesion.addEventListener('submit', function(evento) {
+                evento.preventDefault();
+                // Manejo del formulario de inicio de sesión
+                const nombreUsuario = formularioInicioSesion.nombreUsuario.value;
+                const contraseña = formularioInicioSesion.contraseña.value;
+                const usuario = usuarios.find(usuario => usuario.nombreUsuario === nombreUsuario && usuario.contraseña === contraseña);
+                
+                if (usuario) {
+                    mensajeInicioSesion.textContent = 'Inicio de sesión exitoso!';
+                    mensajeInicioSesion.style.color = 'green';
+                    // Aquí puedes redirigir al usuario a otra página o mostrar contenido adicional
+                } else {
+                    mensajeInicioSesion.textContent = 'Nombre de usuario o contraseña incorrectos.';
+                    mensajeInicioSesion.style.color = 'red';
+                }
+                
+                formularioInicioSesion.reset();
+            });
+
+            // Mostrar reseñas y publicaciones al cargar la página
+            mostrarReseñas();
+            mostrarPublicaciones();
+
+            // Función para descargar los datos en formato JSON
+            descargarJSON.addEventListener('click', function() {
+                const datos = {
+                    reseñas: reseñas,
+                    publicaciones: publicaciones,
+                    usuarios: usuarios,
+                    formularioContacto: JSON.parse(localStorage.getItem('datosFormulario')) || {}
+                };
+                
+                const blob = new Blob([JSON.stringify(datos, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'datos.json';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            });
+        });
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Mi Landing Page de Videojuegos</h1>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#Inicio">Inicio</a></li>
+            <li><a href="#JuegosDestacados">Juegos Destacados</a></li>
+            <li><a href="#QuienesSomos">Quiénes Somos</a></li>
+            <li><a href="#Contacto">Contacto</a></li>
+            <li><a href="#Reseñas">Reseñas de Usuarios</a></li>
+            <li><a href="#Foro">Foro de la Comunidad</a></li>
+            <li><a href="#MiCanalYT">Mi Canal De Youtube</a></li>
+            <li><a href="#Registro">Registro</a></li>
+            <li><a href="#Login">Login</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section id="Inicio">
+            <h2>¡Bienvenido a nuestra página de resúmenes de videojuegos!</h2>
+            <p>En nuestro sitio, encontrarás reseñas detalladas y resúmenes de los últimos videojuegos, junto con noticias y actualizaciones del mundo de los videojuegos.</p>
+        </section>
+
+        <section id="JuegosDestacados">
+            <h2>Juegos Destacados</h2>
+            <table class="mi-tabla">
+                <tr>
+                    <td><a href="#ResumenMonsterHunterWorld"><img src="IconosJuegos/monsterhunterworldicono.png" alt="Monster Hunter"></a></td>
+                    <td><a href="#ResumenMonsterHunterIceborne"><img src="IconosJuegos/monsterhuntericebornicono.png" alt="Monster Hunter Iceborne"></a></td>
+                    <td><a href="#ResumenDiablo4"><img src="IconosJuegos/diablo4icono.png" alt="Diablo 4"></a></td>
+                </tr>
+                <tr>
+                    <td><a href="#ResumenMetroidDread"><img src="IconosJuegos/metroiddreadicono.png" alt="Metroid"></a></td>
+                    <td><a href="#ResumenHogwartsLegacy"><img src="IconosJuegos/hogwartslegacyicono.png" alt="Hogwarts Legacy"></a></td>
+                    <td><a href="#ResumenReturnal"><img src="IconosJuegos/returnalicono.png" alt="Returnal"></a></td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- Sección de resúmenes -->
+        <section id="ResumenMonsterHunterWorld">
+            <div class="tarjeta">
+                <img src="ImagenesJuegos/MonsterHunterWorld.png" alt="Monster Hunter World">
+                <div class="tarjeta-info">
+                    <h3>Monster Hunter World</h3>
+                    <p>Sumérgete en un emocionante mundo de caza y aventura con Monster Hunter: World. 
+                        Embárcate en épicas expediciones para cazar monstruos feroces en entornos impresionantes y desafiantes. 
+                        Conviértete en un cazador experto mientras exploras exuberantes bosques, vastos desiertos y peligrosas selvas en busca de bestias colosales. 
+                        Forma equipo con otros cazadores en emocionantes batallas cooperativas o desafía a las bestias tú solo en épicas luchas uno contra uno. 
+                        Con una jugabilidad profunda y una cantidad infinita de criaturas para descubrir, Monster Hunter: World te ofrece una experiencia de caza única llena de acción 
+                        y emoción.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="ResumenMonsterHunterIceborne">
+            <div class="tarjeta">
+                <img src="ImagenesJuegos/MonsterHunterWorldIceborne.jpg" alt="Monster Hunter World Iceborne">
+                <div class="tarjeta-info">
+                    <h3>Monster Hunter World Iceborne</h3>
+                    <p>Prepárate para una nueva y helada aventura con Monster Hunter World: Iceborne. 
+                        En esta expansión masiva, los cazadores regresan al mundo de Monster Hunter para enfrentarse a una nueva y desafiante región cubierta de nieve: Hoarfrost Reach. 
+                        Descubre nuevas criaturas poderosas y letales mientras te adentras en terrenos inhóspitos y enfrentas a bestias feroces en una búsqueda para descubrir los secretos de este misterioso lugar. 
+                        Con un vasto arsenal de armas y armaduras nuevas, así como habilidades especiales ampliadas, Iceborne ofrece una experiencia de caza aún más emocionante y desafiante. 
+                        Únete a tus compañeros cazadores y prepárate para conquistar las heladas tierras de Iceborne en busca de gloria y honor.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="ResumenDiablo4">
+            <div class="tarjeta">
+                <img src="ImagenesJuegos/Diablo4.jpg" alt="Diablo4">
+                <div class="tarjeta-info">
+                    <h3>Diablo IV</h3>
+                    <p> Diablo 4 es un juego de rol de acción ambientado en un oscuro mundo de fantasía. 
+                        La historia se desarrolla en el mundo de Santuario, donde los jugadores se enfrentan a hordas de demonios y otras criaturas malignas mientras exploran vastos paisajes y mazmorras. 
+                        Los jugadores pueden elegir entre diferentes clases de personajes, cada una con habilidades únicas, y trabajar solos o en grupo para derrotar a los enemigos y completar misiones. 
+                        El juego presenta un sistema de progresión profundo, con la capacidad de personalizar el equipo y las habilidades de los personajes para adaptarse a diferentes estilos de juego.</p>
+                </div>        
+            </div>
+        </section>
+
+        <section id="ResumenMetroidDread">
+            <div class="tarjeta">
+                <img src="ImagenesJuegos/MeroidDread.png" alt="Meroid Dread">
+                <div class="tarjeta-info">
+                    <h3>Metroid Dread</h3>
+                    <p> Metroid Dread es un juego de acción y aventuras que sigue a la icónica cazarrecompensas Samus Aran en su misión para detener una amenaza alienígena. 
+                        Ambientado en un misterioso planeta llamado ZDR, Samus debe explorar entornos peligrosos, enfrentarse a enemigos letales y descubrir secretos mientras busca respuestas sobre los misteriosos E.M.M.I., 
+                        poderosas máquinas que la persiguen implacablemente. Con una combinación de exploración, combate y habilidades únicas, 
+                        Samus lucha por desentrañar los secretos de ZDR y poner fin a la amenaza que acecha en sus sombras.</p>
+                </div>        
+            </div>
+        </section>
+
+        <section id="ResumenHogwartsLegacy">
+            <div class="tarjeta">
+                <img src="ImagenesJuegos/HogwartsLegacy.jpg" alt="Hogwarts Legacy">
+                <div class="tarjeta-info">
+                    <h3>Hogwarts Legacy</h3>
+                    <p> Hogwarts Legacy es un próximo juego de rol de acción ambientado en el mundo mágico de Harry Potter. 
+                        Los jugadores tendrán la oportunidad de explorar el Colegio Hogwarts de Magia y Hechicería en la década de 1800, mucho antes de los eventos de la serie de libros y películas. 
+                        En el juego, los jugadores crearán su propio personaje estudiante y tendrán la libertad de explorar el castillo, aprender hechizos, participar en clases, 
+                        completar misiones y descubrir secretos ocultos en el vasto mundo mágico. 
+                        Con un enfoque en la narrativa y la aventura, "Hogwarts Legacy" promete ofrecer una experiencia inmersiva y emocionante para los fans de la franquicia de Harry Potter y los amantes de los juegos de rol.</p>
+                </div>        
+            </div>
+        </section>
+
+        <section id="ResumenReturnal">
+            <div class="tarjeta">
+                <img src="ImagenesJuegos/Returnal.jpg" alt="Returnal">
+                <div class="tarjeta-info">
+                    <h3>Returnal</h3>
+                    <p> Returnal es un juego de acción y aventuras desarrollado exclusivamente para PlayStation 5. 
+                        En el juego, los jugadores asumen el papel de Selene, una astronauta atrapada en un misterioso planeta alienígena. 
+                        La mecánica principal del juego gira en torno a la exploración de un entorno generativamente creado y la lucha contra hordas de enemigos en combates frenéticos 
+                        y desafiantes. La singularidad de "Returnal" radica en su ciclo de muerte y resurrección, donde cada vez que Selene muere, el mundo del juego se reconfigura, 
+                        ofreciendo nuevos desafíos y oportunidades. Con una combinación de acción intensa, exploración atmosférica y una narrativa intrigante, 
+                        "Returnal" ofrece una experiencia emocionante y envolvente para los jugadores de PS5.</p>
+                </div>        
+            </div>
+        </section>
+
+        <section id="QuienesSomos">
+            <h2>¿Quiénes somos?</h2>
+            <p>¡Hola! Soy Mario, un amante de los videojuegos apasionado por ayudarte a descubrir los juegos perfectos para ti. 
+                En este espacio, ofrecemos reseñas detalladas y resúmenes de los últimos lanzamientos, junto con valiosos consejos y recomendaciones para que puedas tomar decisiones 
+                informadas sobre qué juegos jugar. Nuestra misión es guiarte en tu viaje por el emocionante mundo de los videojuegos, brindándote toda la información que necesitas 
+                para disfrutar al máximo de tu experiencia de juego. ¡Únete a nosotros y sumérgete en la diversión!</p>
+        </section>
+
+        <section id="Contacto">
+            <h2>Contacto</h2>
+            <form id="formularioContacto">
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" name="nombre" required>
+                
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+                
+                <label for="edad">Edad:</label>
+                <input type="number" id="edad" name="edad" required>
+                
+                <label for="fecha">Fecha de Contacto:</label>
+                <input type="date" id="fecha" name="fecha" required>
+                
+                <label for="tema">Tema de Interés:</label>
+                <select id="tema" name="tema">
+                    <option value="juegos">Juegos</option>
+                    <option value="noticias">Noticias</option>
+                    <option value="soporte">Soporte</option>
+                </select>
+                
+                <label for="suscripcion">Suscribirse al boletín:</label>
+                <input type="checkbox" id="suscripcion" name="suscripcion">
+                
+                <label for="mensaje">Mensaje:</label>
+                <textarea id="mensaje" name="mensaje" cols="30" rows="5" placeholder="Escribe tu mensaje aquí"></textarea>
+                
+                <button type="submit">Enviar</button>
+
+                <button id="descargarJSON">Descargar JSON</button>
+            </form>
+        </section>
+
+        <section id="Reseñas">
+            <h2>Reseñas de Usuarios</h2>
+            <form id="formularioReseña">
+                <label for="juego">Juego:</label>
+                <input type="text" id="juego" name="juego" required>
+                
+                <label for="usuario">Usuario:</label>
+                <input type="text" id="usuario" name="usuario" required>
+                
+                <label for="reseña">Reseña:</label>
+                <textarea id="reseña" name="reseña" cols="30" rows="5" required></textarea>
+                
+                <button type="submit">Agregar Reseña</button>
+            </form>
+            
+            <div id="listaReseñas"></div>
+        </section>
+
+        <section id="Foro">
+            <h2>Foro de la Comunidad</h2>
+            <form id="formularioForo">
+                <label for="titulo">Título:</label>
+                <input type="text" id="titulo" name="titulo" required>
+                
+                <label for="contenido">Contenido:</label>
+                <textarea id="contenido" name="contenido" cols="30" rows="5" required></textarea>
+                
+                <button type="submit">Publicar</button>
+            </form>
+            
+            <div id="listaPublicaciones"></div>
+        </section>
+        
+        <section id="MiCanalYT">
+            <h2>Mi Canal De Youtube</h2>
+            <a href="https://www.youtube.com/channel/UC8nPTr_l1OnUrGN9PL-EEbg" target="_blank">Visita mi canal</a>
+        </section>
+
+        <section id="Registro">
+            <h2>Registrarse</h2>
+            <form id="formularioRegistro">
+                <label for="regNombreUsuario">Nombre de usuario:</label>
+                <input type="text" id="regNombreUsuario" name="regNombreUsuario" required>
+                
+                <label for="regContraseña">Contraseña:</label>
+                <input type="password" id="regContraseña" name="regContraseña" required>
+                
+                <button type="submit">Registrarse</button>
+            </form>
+            <div id="mensajeRegistro"></div>
+        </section>
+
+        <section id="Login">
+            <h2>Iniciar Sesión</h2>
+            <form id="formularioInicioSesion">
+                <label for="nombreUsuario">Nombre de usuario:</label>
+                <input type="text" id="nombreUsuario" name="nombreUsuario" required>
+                
+                <label for="contraseña">Contraseña:</label>
+                <input type="password" id="contraseña" name="contraseña" required>
+                
+                <button type="submit">Iniciar Sesión</button>
+            </form>
+            <div id="mensajeInicioSesion"></div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Mi Landing Page de Videojuegos</p>
+    </footer>
+</body>
+</html>
